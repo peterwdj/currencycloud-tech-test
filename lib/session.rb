@@ -17,8 +17,16 @@ class Session
 
   def login(username=ENV['USERNAME'], apikey=ENV['APIKEY'])
     payload = create_payload(username, apikey)
-    response = RestClient.post LOGIN_URL, payload, HEADER
-    @auth_key = JSON.parse(response)['token']
+    begin
+      response = RestClient.post LOGIN_URL, payload, HEADER
+    rescue RestClient::ExceptionWithResponse => err
+      puts err.response.code
+    end
+    if err == nil
+      @auth_key = JSON.parse(response)['token']
+    else
+      return err.response.to_s
+    end
   end
 
   private
