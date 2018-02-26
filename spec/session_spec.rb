@@ -17,7 +17,7 @@ describe Session do
     it 'returns an authentication key' do
       RestClient = double('RestClient', :post => { :token => '12345.yourtoken.67890' }.to_json)
       session = Session.create
-      session.login(ENV['USERNAME'], ENV['APIKEY'])
+      session.login
       expect(session.auth_key).to eq '12345.yourtoken.67890'
     end
   end
