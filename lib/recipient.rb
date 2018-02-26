@@ -17,7 +17,7 @@ class Recipient
     values = {
       'recipient': {
         'name': name
-      }.to_json
+      }
     }
   end
 
