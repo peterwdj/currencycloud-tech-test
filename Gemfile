@@ -8,4 +8,5 @@ gem 'rubocop'
 
 group :test do
   gem 'rspec'
+  gem 'webmock'
 end
