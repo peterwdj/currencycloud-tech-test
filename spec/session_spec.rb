@@ -1,10 +1,15 @@
 require 'session'
 
 describe Session do
-  describe '#login' do
+  describe '#create' do
     it 'create a new instance of Session' do
-      session = described_class.new
       expect(Session.create).to be_an_instance_of(Session)
+    end
+  end
+
+  describe '#acces' do
+    it 'returns an instance of Session' do
+      expect(Session.access).to be_an_instance_of(Session)
     end
   end
 end
