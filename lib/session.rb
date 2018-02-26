@@ -4,7 +4,7 @@ require 'json'
 
 class Session
   attr_reader :auth_key
-  LOGIN_URL = 'https://coolpay.herokuapp.com/api/login'
+  LOGIN_ENDPOINT = 'https://coolpay.herokuapp.com/api/login'
   HEADER = { :content_type => 'application/json' }
 
   def self.create
@@ -38,7 +38,7 @@ class Session
 
   def send_request(payload)
     begin
-      response = RestClient.post LOGIN_URL, payload, HEADER
+      response = RestClient.post LOGIN_ENDPOINT, payload, HEADER
     rescue RestClient::ExceptionWithResponse => err
     end
     return err, response
