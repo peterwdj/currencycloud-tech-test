@@ -16,8 +16,14 @@ class Session
   end
 
   def login(username=ENV['USERNAME'], apikey=ENV['APIKEY'])
-    payload = { 'username': username, 'apikey': apikey }.to_json
+    payload = create_payload(username, apikey)
     response = RestClient.post LOGIN_URL, payload, HEADER
     @auth_key = JSON.parse(response)['token']
+  end
+
+  private
+
+  def create_payload(username, apikey)
+    { 'username': username, 'apikey': apikey }.to_json
   end
 end
