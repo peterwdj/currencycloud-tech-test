@@ -14,8 +14,11 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-require 'webmock/rspec'
 require 'helpers'
+require 'simplecov'
+require 'webmock/rspec'
+
+SimpleCov.start
 
 
 RSpec.configure do |config|
