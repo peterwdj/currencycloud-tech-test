@@ -1,6 +1,10 @@
 require 'session'
 
 describe Session do
+  before :each do
+    Session.create
+  end
+
   describe '#create' do
     it 'create a new instance of Session' do
       expect(Session.create).to be_an_instance_of Session
@@ -16,15 +20,13 @@ describe Session do
   describe '#login' do
     it 'returns an authentication key' do
       stub_good_credentials
-      session = Session.create
-      session.login
-      expect(session.auth_key).to eq '12345.yourtoken.67890'
+      Session.access.login
+      expect(Session.access.auth_key).to eq '12345.yourtoken.67890'
     end
 
     it 'returns error response text when invalid credentials are supplied' do
       stub_bad_credentials
-      session = Session.create
-      expect(session.login('bad', 'credentials')).to eq 'Internal server error'
+      expect(Session.access.login('bad', 'credentials')).to eq 'Internal server error'
     end
   end
 end
