@@ -1,4 +1,4 @@
-def stub_good_credentials
+def stub_valid_login
   stub_request(:post, 'https://coolpay.herokuapp.com/api/login').
     with(
       body: {
@@ -14,7 +14,7 @@ def stub_good_credentials
     )
 end
 
-def stub_bad_credentials
+def stub_invalid_login
   stub_request(:post, 'https://coolpay.herokuapp.com/api/login').
     with(
       body: {
@@ -27,5 +27,23 @@ def stub_bad_credentials
     ).to_return(
       status: 404,
       body: 'Internal server error'
-  )
+    )
+end
+
+def stub_recipient_with_invalid_auth_key
+  stub_request(:post, "https://coolpay.herokuapp.com/api/recipients").
+    with(
+      body: {
+        'recipient': {
+          'name': 'Marvin'
+          }
+        },
+      headers: {
+        :authorization => 'Bearer 42',
+        :content_type => 'application/x-www-form-urlencoded',
+      }
+    ).to_return(
+      status: 401,
+      body: "401 Unauthorized"
+    )
 end
