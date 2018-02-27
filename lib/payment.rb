@@ -5,7 +5,7 @@ class Payment
   PAYMENTS_ENDPOINT = 'https://coolpay.herokuapp.com/api/payments'
   RECIPIENTS_ENDPOINT = 'https://coolpay.herokuapp.com/api/recipients'
 
-  def send_new(name, amount, auth_key)
+  def send_to(name, amount, auth_key)
     headers = create_headers(auth_key)
     id = get_id_by_name(name, headers)
     payload = create_payload(amount, id)

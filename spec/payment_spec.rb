@@ -7,7 +7,7 @@ describe Payment do
     it 'makes a POST request to the payments API' do
       allow(RestClient).to receive(:post)
       allow(payment).to receive(:get_id_by_name).and_return('12345')
-      payment.send_new('Dr. Evil', 1000000, '42')
+      payment.send_to('Dr. Evil', 1000000, '42')
       expect(RestClient).to have_received(:post).with(
         'https://coolpay.herokuapp.com/api/payments',
         {:payment=>{
