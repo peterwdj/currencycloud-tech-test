@@ -4,17 +4,23 @@ require 'rest-client'
 class Payment
   PAYMENTS_ENDPOINT = 'https://coolpay.herokuapp.com/api/payments'
   RECIPIENTS_ENDPOINT = 'https://coolpay.herokuapp.com/api/recipients'
+  NONEXISTENT_RECIPIENT_ERROR = 'Error: your selected recipient does not exist. Please add them as a recipient before attempting to send a payment to them.'
 
   def send_to(name, amount, auth_key)
-    headers = create_headers(auth_key)
-    id = get_id_by_name(name, headers)
-    return "Error: #{name} is not yet a recipient. Please add them as a recipient before attempting to send a payment to them." if id == nil
-    payload = create_payload(amount, id)
+    headers, payload = create_params(name, amount, auth_key)
+    return NONEXISTENT_RECIPIENT_ERROR if payload[:payment][:recipient_id] == nil
     response, error = send_request(payload, headers)
     return error.response.to_s unless error.nil?
   end
 
   private
+
+  def create_params(name, amount, auth_key)
+    headers = create_headers(auth_key)
+    id = get_id_by_name(name, headers)
+    payload = create_payload(amount, id)
+    return headers, payload
+  end
 
   def get_id_by_name(name, headers)
     response = RestClient.get RECIPIENTS_ENDPOINT + "?name=#{name}", headers
