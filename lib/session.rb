@@ -20,19 +20,19 @@ class Session
     { 'username': username, 'apikey': apikey }.to_json
   end
 
-  def send_response(err, response)
-    if err == nil
-      @auth_key = JSON.parse(response)['token']
-    else
-      err.response.to_s
-    end
-  end
-
   def send_request(payload)
     begin
       response = RestClient.post LOGIN_ENDPOINT, payload, HEADER
     rescue RestClient::ExceptionWithResponse => err
     end
     return err, response
+  end
+  
+  def send_response(err, response)
+    if response != nil && response.code == 200
+      @auth_key = JSON.parse(response)['token']
+    else
+      err.response.to_s
+    end
   end
 end
