@@ -24,24 +24,8 @@ describe Payment do
 
     it 'returns error response text when an invalid auth key is provided' do
       allow(payment).to receive(:get_id_by_name)
-      stub_request(:post, 'https://coolpay.herokuapp.com/api/payments')
-        .with(
-          body: {
-            payment: {
-              amount: "1000000",
-              currency: "GBP",
-              recipient_id: nil
-            }
-          },
-          headers: {
-       	    authorization:'Bearer 5n34ky-br1b3',
-       	    content_type: 'application/x-www-form-urlencoded'
-          })
-          .to_return(
-            status: 401,
-            body: '401 Unauthorized'
-          )
-        expect(payment.send_to('Government Officials', 1_000_000, '5n34ky-br1b3')).to eq '401 Unauthorized'
+      stub_payment_with_invalid_auth_key
+      expect(payment.send_to('Government Officials', 1_000_000, '5n34ky-br1b3')).to eq '401 Unauthorized'
     end
   end
 end
