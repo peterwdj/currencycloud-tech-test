@@ -39,5 +39,29 @@ describe Payment do
       stub_successful_payment
       expect(payment.verify('g14nt-l4z3r')).to eq 'Your last payment was successful.'
     end
+
+    it 'informs the user that the payment has been unsuccessful' do
+      stub_request(:get, "https://coolpay.herokuapp.com/api/payments")
+      .with(
+        headers: {
+          authorization: 'Bearer g14nt-l4z3r',
+          content_type: 'application/json',
+        }
+      ).to_return(
+        status: 200,
+        body: {
+          payments: [
+            {
+              id: 'mr-pr351d3nt',
+              amount: 10.50,
+              currency: 'GBP',
+              recipient_id: 'dr-3v1l',
+              status: 'failed'
+            }
+          ]
+        }.to_json
+      )
+      expect(payment.verify('g14nt-l4z3r')).to eq 'Your last payment was not successful. Please try again.'
+    end
   end
 end
