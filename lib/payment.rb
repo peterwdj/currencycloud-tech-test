@@ -10,6 +10,7 @@ class Payment
     id = get_id_by_name(name, headers)
     payload = create_payload(amount, id)
     response, error = send_request(payload, headers)
+    return error.response.to_s unless error.nil?
   end
 
   private
