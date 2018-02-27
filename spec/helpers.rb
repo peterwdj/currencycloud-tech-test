@@ -67,3 +67,26 @@ def stub_payment_with_invalid_auth_key
       body: '401 Unauthorized'
     )
 end
+
+def stub_successful_payment
+  stub_request(:get, "https://coolpay.herokuapp.com/api/payments")
+  .with(
+    headers: {
+      authorization: 'Bearer g14nt-l4z3r',
+      content_type: 'application/json',
+    }
+  ).to_return(
+    status: 200,
+    body: {
+      payments: [
+        {
+          id: 'mr-pr351d3nt',
+          amount: 10.50,
+          currency: 'GBP',
+          recipient_id: 'dr-3v1l',
+          status: 'paid'
+        }
+      ]
+    }.to_json
+  )
+end

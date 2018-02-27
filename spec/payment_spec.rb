@@ -36,27 +36,7 @@ describe Payment do
 
   describe '#verify' do
     it 'informs the user that the payment has been successful' do
-      stub_request(:get, "https://coolpay.herokuapp.com/api/payments")
-      .with(
-        headers: {
-       	  authorization: 'Bearer g14nt-l4z3r',
-       	  content_type: 'application/json',
-        }
-      ).to_return(
-        status: 200,
-        body: {
-          payments: [
-            {
-              id: 'mr-pr351d3nt',
-              amount: 10.50,
-              currency: 'GBP',
-              recipient_id: 'dr-3v1l',
-              status: 'paid'
-            }
-          ]
-        }.to_json
-      )
-
+      stub_successful_payment
       expect(payment.verify('g14nt-l4z3r')).to eq 'Your last payment was successful.'
     end
   end
