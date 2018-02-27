@@ -9,8 +9,8 @@ class Session
 
   def login(username=ENV['USERNAME'], apikey=ENV['APIKEY'])
     payload = create_payload(username, apikey)
-    err, response = send_request(payload)
-    send_response(err, response)
+    response, error = send_request(payload)
+    send_response(response, error)
   end
 
 
@@ -23,16 +23,16 @@ class Session
   def send_request(payload)
     begin
       response = RestClient.post LOGIN_ENDPOINT, payload, HEADER
-    rescue RestClient::ExceptionWithResponse => err
+    rescue RestClient::ExceptionWithResponse => error
     end
-    return err, response
+    return response, error
   end
 
-  def send_response(err, response)
+  def send_response(response, error)
     if response != nil && response.code == 200
       @auth_key = JSON.parse(response)['token']
     else
-      err.response.to_s
+      error.response.to_s
     end
   end
 end
