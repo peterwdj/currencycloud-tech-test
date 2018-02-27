@@ -8,7 +8,6 @@ class Recipient
     payload = create_payload(name)
     headers = create_headers(auth_key)
     response, error = send_request(payload, headers)
-    p error
     return error.response.to_s if error != nil
   end
 
