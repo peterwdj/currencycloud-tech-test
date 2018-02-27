@@ -1,6 +1,6 @@
 require 'dotenv/load'
-require 'rest-client'
 require 'json'
+require 'rest-client'
 
 class Session
   attr_reader :auth_key
@@ -27,7 +27,7 @@ class Session
     end
     return err, response
   end
-  
+
   def send_response(err, response)
     if response != nil && response.code == 200
       @auth_key = JSON.parse(response)['token']
