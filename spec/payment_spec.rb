@@ -30,7 +30,7 @@ describe Payment do
 
     it 'returns a prompt to create the recipient if the specified recipient does not exist' do
       allow(payment).to receive(:get_id_by_name).and_return(nil)
-      expect(payment.send_to('My Future Self', 1000, 'wh4t-4-l0v31y-g1ft')).to eq 'Error: My Future Self is not yet a recipient. Please add them as a recipient before attempting to send a payment to them.'
+      expect(payment.send_to('My Future Self', 1000, 'wh4t-4-l0v31y-g1ft')).to eq 'Error: your selected recipient does not exist. Please add them as a recipient before attempting to send a payment to them.'
     end
   end
 end
