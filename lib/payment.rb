@@ -5,12 +5,20 @@ class Payment
   PAYMENTS_ENDPOINT = 'https://coolpay.herokuapp.com/api/payments'
   RECIPIENTS_ENDPOINT = 'https://coolpay.herokuapp.com/api/recipients'
   NONEXISTENT_RECIPIENT_ERROR = 'Error: your selected recipient does not exist. Please add them as a recipient before attempting to send a payment to them.'
+  SUCCESSFUL_PAYMENT = 'Your last payment was successful.'
 
   def send_to(name, amount, auth_key)
     headers, payload = create_params(name, amount, auth_key)
     return NONEXISTENT_RECIPIENT_ERROR if payload[:payment][:recipient_id] == nil
     response, error = send_request(payload, headers)
     return error.response.to_s unless error.nil?
+  end
+
+  def verify(auth_key)
+    headers = create_headers(auth_key)
+    response = RestClient.get PAYMENTS_ENDPOINT, headers
+    status = JSON.parse(response)['payments'][0]['status']
+    SUCCESSFUL_PAYMENT if status == 'paid'
   end
 
   private
