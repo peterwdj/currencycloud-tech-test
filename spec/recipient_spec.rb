@@ -13,21 +13,7 @@ describe Recipient do
     end
 
     it 'returns error response text when an invalid auth key is provided' do
-      stub_request(:post, "https://coolpay.herokuapp.com/api/recipients").
-        with(
-          body: {
-            'recipient': {
-              'name': 'Marvin'
-              }
-            },
-          headers: {
-       	    :authorization => 'Bearer 42',
-       	    :content_type => 'application/x-www-form-urlencoded',
-          }
-        ).to_return(
-          status: 401,
-          body: "401 Unauthorized"
-        )
+      stub_recipient_with_invalid_auth_key
       expect(recipient.add('Marvin', '42')).to eq '401 Unauthorized'
     end
   end
