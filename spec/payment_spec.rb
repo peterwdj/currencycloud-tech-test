@@ -7,7 +7,7 @@ describe Payment do
     it 'makes a POST request to the payments API' do
       allow(RestClient).to receive(:post)
       allow(payment).to receive(:get_id_by_name).and_return('12345')
-      payment.send_to('Dr. Evil', 1_000_000, '42')
+      payment.send_to('Dr. Evil', 1_000_000, 'dummy-key')
       expect(RestClient).to have_received(:post).with(
         'https://coolpay.herokuapp.com/api/payments',
         { payment: {
@@ -17,7 +17,7 @@ describe Payment do
         } },
         {
           content_type: 'application/json',
-          authorization: 'Bearer 42'
+          authorization: 'Bearer dummy-key'
         }
       )
     end
@@ -31,6 +31,33 @@ describe Payment do
     it 'returns a prompt to create the recipient if the specified recipient does not exist' do
       allow(payment).to receive(:get_id_by_name).and_return(nil)
       expect(payment.send_to('My Future Self', 1000, 'wh4t-4-l0v31y-g1ft')).to eq 'Error: your selected recipient does not exist. Please add them as a recipient before attempting to send a payment to them.'
+    end
+  end
+
+  describe '#verify' do
+    it 'informs the user that the payment has been successful' do
+      stub_request(:get, "https://coolpay.herokuapp.com/api/payments")
+      .with(
+        headers: {
+       	  authorization: 'Bearer g14nt-l4z3r',
+       	  content_type: 'application/json',
+        }
+      ).to_return(
+        status: 200,
+        body: {
+          payments: [
+            {
+              id: 'mr-pr351d3nt',
+              amount: 10.50,
+              currency: 'GBP',
+              recipient_id: 'dr-3v1l',
+              status: 'paid'
+            }
+          ]
+        }.to_json
+      )
+
+      expect(payment.verify('g14nt-l4z3r')).to eq 'Your last payment was successful.'
     end
   end
 end
