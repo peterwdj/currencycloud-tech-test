@@ -14,5 +14,16 @@ describe Session do
       stub_bad_credentials
       expect(session.login('bad', 'credentials')).to eq 'Internal server error'
     end
+
+    it 'makes a POST request to the login API' do
+      err = double('err')
+      response = double('response')
+      allow(RestClient).to receive(:post).and_return(err, response)
+      allow(session).to receive(:send_response)
+      session.login('Mark', 'n3w5-f33d')
+      expect(RestClient).to have_received(:post).with(
+        'https://coolpay.herokuapp.com/api/login', "{\"username\":\"Mark\",\"apikey\":\"n3w5-f33d\"}", {:content_type=>"application/json"}
+        )
+    end
   end
 end
