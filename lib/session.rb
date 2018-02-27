@@ -7,14 +7,6 @@ class Session
   LOGIN_ENDPOINT = 'https://coolpay.herokuapp.com/api/login'
   HEADER = { :content_type => 'application/json' }
 
-  def self.create
-    @session = Session.new
-  end
-
-  def self.access
-    @session
-  end
-
   def login(username=ENV['USERNAME'], apikey=ENV['APIKEY'])
     payload = create_payload(username, apikey)
     err, response = send_request(payload)
