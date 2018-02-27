@@ -8,6 +8,7 @@ class Payment
   def send_to(name, amount, auth_key)
     headers = create_headers(auth_key)
     id = get_id_by_name(name, headers)
+    return "Error: #{name} is not yet a recipient. Please add them as a recipient before attempting to send a payment to them." if id == nil
     payload = create_payload(amount, id)
     response, error = send_request(payload, headers)
     return error.response.to_s unless error.nil?
