@@ -7,7 +7,9 @@ class Recipient
   def add(name, auth_key)
     payload = create_payload(name)
     headers = create_headers(auth_key)
-    response = RestClient.post RECIPIENTS_ENDPOINT, payload, headers
+    response, error = send_request(payload, headers)
+    p error
+    return error.response.to_s if error != nil
   end
 
 
@@ -26,5 +28,13 @@ class Recipient
       :content_type => 'application/json',
       :authorization => "Bearer #{auth_key}"
     }
+  end
+
+  def send_request(payload, headers)
+    begin
+      response = RestClient.post RECIPIENTS_ENDPOINT, payload, headers
+    rescue RestClient::ExceptionWithResponse => error
+    end
+    return response, error
   end
 end
