@@ -12,18 +12,17 @@ class Payment
     response, error = send_request(payload, headers)
   end
 
-
   private
 
   def get_id_by_name(name, headers)
     response = RestClient.get RECIPIENTS_ENDPOINT + "?name=#{name}", headers
-    return JSON.parse(response)['recipients'][0]['id']
+    JSON.parse(response)['recipients'][0]['id']
   end
 
   def create_headers(auth_key)
     {
-      :content_type => 'application/json',
-      :authorization => "Bearer #{auth_key}"
+      content_type: 'application/json',
+      authorization: "Bearer #{auth_key}"
     }
   end
 

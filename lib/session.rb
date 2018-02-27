@@ -5,14 +5,13 @@ require 'rest-client'
 class Session
   attr_reader :auth_key
   LOGIN_ENDPOINT = 'https://coolpay.herokuapp.com/api/login'
-  HEADER = { :content_type => 'application/json' }
+  HEADER = { content_type: 'application/json' }
 
-  def login(username=ENV['USERNAME'], apikey=ENV['APIKEY'])
+  def login(username = ENV['USERNAME'], apikey = ENV['APIKEY'])
     payload = create_payload(username, apikey)
     response, error = send_request(payload)
     send_response(response, error)
   end
-
 
   private
 
@@ -29,7 +28,7 @@ class Session
   end
 
   def send_response(response, error)
-    if response != nil && response.code == 200
+    if !response.nil? && response.code == 200
       @auth_key = JSON.parse(response)['token']
     else
       error.response.to_s

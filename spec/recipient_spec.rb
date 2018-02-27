@@ -9,9 +9,11 @@ describe Recipient do
       recipient.add('Marvin', '42')
       expect(RestClient).to have_received(:post).with(
         'https://coolpay.herokuapp.com/api/recipients',
-        {:recipient=>{:name => "Marvin"}},
-        {:content_type=>"application/json", :authorization=>"Bearer 42"}
-        )
+        { recipient: { name: 'Marvin' } },
+        {
+          content_type: 'application/json', authorization: 'Bearer 42'
+        }
+      )
     end
 
     it 'returns error response text when an invalid auth key is provided' do
