@@ -22,7 +22,9 @@ describe Session do
       allow(session).to receive(:send_response)
       session.login('Mark', 'n3w5-f33d')
       expect(RestClient).to have_received(:post).with(
-        'https://coolpay.herokuapp.com/api/login', "{\"username\":\"Mark\",\"apikey\":\"n3w5-f33d\"}", {:content_type=>"application/json"}
+        'https://coolpay.herokuapp.com/api/login',
+        "{\"username\":\"Mark\",\"apikey\":\"n3w5-f33d\"}",
+        {:content_type=>"application/json"}
         )
     end
   end
