@@ -55,7 +55,7 @@ def stub_payment_with_invalid_auth_key
         payment: {
           amount: "1000000",
           currency: "GBP",
-          recipient_id: nil
+          recipient_id: '12345'
         }
       },
       headers: {
