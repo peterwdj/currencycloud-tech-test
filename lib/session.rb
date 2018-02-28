@@ -1,7 +1,7 @@
 require 'dotenv/load'
 require 'json'
-require 'payment'
-require 'recipient'
+require_relative './payment'
+require_relative './recipient'
 require 'rest-client'
 
 class Session
