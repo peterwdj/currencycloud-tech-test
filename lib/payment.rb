@@ -18,7 +18,7 @@ class Payment
   def verify_payment(auth_key)
     headers = create_headers(auth_key)
     response = RestClient.get PAYMENTS_ENDPOINT, headers
-    status = JSON.parse(response)['payments'][0]['status']
+    status = JSON.parse(response)['payments'][-1]['status']
     status == 'paid' ? SUCCESSFUL_PAYMENT : UNSUCCESSFUL_PAYMENT
   end
 
