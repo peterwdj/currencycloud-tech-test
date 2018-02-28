@@ -30,6 +30,24 @@ def stub_invalid_login
     )
 end
 
+def stub_recipient_with_valid_auth_key
+  stub_request(:post, 'https://coolpay.herokuapp.com/api/recipients')
+    .with(
+      body: {
+        'recipient': {
+          'name': 'Jack'
+        }
+      },
+      headers: {
+        authorization: 'Bearer dummy-key',
+        content_type: 'application/x-www-form-urlencoded'
+      }
+    )
+    .to_return(
+      status: 200
+    )
+end
+
 def stub_recipient_with_invalid_auth_key
   stub_request(:post, 'https://coolpay.herokuapp.com/api/recipients')
     .with(
