@@ -150,3 +150,26 @@ def stub_unsuccessful_payment
     }.to_json
   )
 end
+
+def stub_processing_payment
+  stub_request(:get, 'https://coolpay.herokuapp.com/api/payments')
+  .with(
+    headers: {
+      authorization: 'Bearer g14nt-l4z3r',
+      content_type: 'application/json'
+    }
+  ).to_return(
+    status: 200,
+    body: {
+      payments: [
+        {
+          id: 'mr-pr351d3nt',
+          amount: 10.50,
+          currency: 'GBP',
+          recipient_id: 'dr-3v1l',
+          status: 'processing'
+        }
+      ]
+    }.to_json
+  )
+end
