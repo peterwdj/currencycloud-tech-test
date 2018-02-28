@@ -13,6 +13,11 @@ class Session
     send_response(response, error)
   end
 
+  def add_recipient(name)
+    recipient = Recipient.new
+    recipient.add(name, @auth_key)
+  end
+
   private
 
   def create_payload(username, apikey)
