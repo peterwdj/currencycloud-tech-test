@@ -54,4 +54,15 @@ describe Session do
       expect(payment).to have_received(:send_to)
     end
   end
+
+  describe '#verify_payment' do
+    it 'calls the payment class\'s #verify method' do
+      stub_valid_login
+      payment = double('payment')
+      allow(payment).to receive(:verify_payment)
+      allow(Payment).to receive(:new).and_return(payment)
+      session.verify_payment
+      expect(payment).to have_received(:verify_payment)
+    end
+  end
 end
