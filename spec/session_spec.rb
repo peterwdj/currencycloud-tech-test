@@ -46,22 +46,7 @@ describe Session do
   describe '#make_payment' do
     it 'calls the payment class\'s #send_to method' do
       stub_valid_login
-      stub_request(:post, 'https://coolpay.herokuapp.com/api/payments')
-      .with(
-        body: {
-          payment: {
-            amount: "1000000",
-            currency: "GBP",
-            recipient_id: '12345'
-          }
-        },
-        headers: {
-          authorization:'Bearer 1n5t4gr4m',
-          content_type: 'application/x-www-form-urlencoded'
-        }
-      ).to_return(
-        status: 200,
-      )
+      stub_payment_with_valid_auth_key
       payment = double('payment')
       allow(payment).to receive(:send_to)
       allow(Payment).to receive(:new).and_return(payment)
