@@ -1,6 +1,6 @@
 # Currencycloud Tech Test
 
-[Introduction](#introduction) | [Quickstart](#quickstart) | [Approach](#approach) | [Challenges](#challenges) | [Final Notes](#final-notes)
+[Introduction](#introduction) | [Quickstart](#quickstart) | [Approach](#approach) | [Challenges](#challenges) | [Miscellaneous Notes](#miscellaneous-notes)
 
 ## Introduction
 
@@ -70,11 +70,16 @@ The test framework for this project is RSpec. Tests can be run by running:
 
 ```
 $ rspec                         ## runs the entire test suite
-$ rspec path/to/file.rb         ## runs an individual test file 
+$ rspec path/to/file.rb         ## runs an individual test file
 ```
 
 ## Approach
 
+The first thing I did with this project was to figure out how the API itself worked. This in itself proved interesting, as I had not used interactive documentation in the style of that provided on Apiary before - only having used static, written documentation.
+
+After establishing how the API worked, the next step was to figure out how the program would be designed. Given that this would just be a command line application, it made sense to have a single, overarching class to allow the user to interact with the application in order to reduce the cognitive load of using it. This class (eventually the Session class) would then delegate to other classes in order to actually carry out the logic of what the actions the program would implement. I used [CRC cards](https://en.wikipedia.org/wiki/Class-responsibility-collaboration_card) in order to aid my design process and ensure a sensible breaking down of the program's different functions.
+
+When building the application itself, I focused on using a test-driven approach to development. Moving one user story at a time, I broke each feature down into its component pieces, and wrote tests for each piece (for example, testing that an API request had been called, and that the method was carrying out the correct operations on any data that was returned). Once tests were passing, following the TDD cycle, I then refactored my code, extracting logic to private methods in order to keep methods slim and moving strings to constants stored within the class.
 
 
 ## Challenges
@@ -96,8 +101,15 @@ Many of the stubbed API requests made with WebMock look very similar. The same c
 *Further refactoring*   
 The Session class feels like it is on the edge of being too bloated. Building any further on this project, or in a real-world setting, it might make sense to extract the logic for building an API request to a separate `APIBuilder` class. However, this feels like it is beyond the scope of satisfying the user stories for this project in its current context.
 
+Separately, but on a similar note, when making a payment (in the Payment class) a private method makes a call to the recipient endpoint in order to find the ID of the given recipient. This feels like it could also be done by instantiating a Recipient object, and calling a Recipient instance method in order to return this data but, again, seems unnecessary for this basic implementation of the application.
+
 *Edge cases*   
 This project has been set up to handle edge cases (such as attempting to make a payment to a recipient that does not yet exist). There will inevitably be edge cases that exist that have not been covered on a small project such as this, but it felt important, as part of the four user stories, to cover some of the more obvious ones in the production code.
 
 *Feature testing*   
 Feature testing of this project was carried out manually. As things stand, this has been done by running code in a command line REPL, and then manually checking via the documentation on Apiary whether or not, for example, recipients had been added. This is both slow and impractical, but also, without a means to clean the list of recipients, leads to the returned objects becoming increasingly bloated. In a real-world version of this project, I would want to investigate ways to automate feature testing, and either stubbing API calls made during the automated feature tests, or cleaning the objects returned by the API. Using environment variables initially seems like a good option to explore in order to achieve the latter.
+
+
+
+----------
+If you have any suggestions or comments on this project, please submit a new issue [here](https://github.com/peterwdj/currencycloud-tech-test/issues/new).
