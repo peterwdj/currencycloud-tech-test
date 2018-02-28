@@ -19,10 +19,7 @@ class Payment
   def verify_payment(auth_key)
     headers = create_headers(auth_key)
     response = RestClient.get PAYMENTS_ENDPOINT, headers
-    status = JSON.parse(response)['payments'][-1]['status']
-    return SUCCESSFUL_PAYMENT if status == 'paid'
-    return UNSUCCESSFUL_PAYMENT if status == 'failed'
-    return PENDING_PAYMENT if status = 'processing'
+    return_status_message(response)
   end
 
   private
@@ -64,5 +61,19 @@ class Payment
     rescue RestClient::ExceptionWithResponse => error
     end
     return response, error
+  end
+
+  def return_status_message(response)
+    status = JSON.parse(response)['payments'][-1]['status']
+    case status
+    when 'paid'
+      SUCCESSFUL_PAYMENT
+    when 'failed'
+      UNSUCCESSFUL_PAYMENT
+    when 'processing'
+      PENDING_PAYMENT
+    else
+      "Error: payment #{status}"
+    end
   end
 end
