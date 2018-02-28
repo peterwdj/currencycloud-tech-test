@@ -1,5 +1,7 @@
 require 'dotenv/load'
 require 'json'
+require 'payment'
+require 'recipient'
 require 'rest-client'
 
 class Session
@@ -16,6 +18,11 @@ class Session
   def add_recipient(name)
     recipient = Recipient.new
     recipient.add(name, @auth_key)
+  end
+
+  def make_payment(name, amount)
+    payment = Payment.new
+    payment.send_to(name, amount, @auth_key)
   end
 
   private
