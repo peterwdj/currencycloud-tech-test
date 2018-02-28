@@ -25,6 +25,11 @@ class Session
     payment.send_to(name, amount, @auth_key)
   end
 
+  def verify_payment
+    payment = Payment.new
+    payment.verify_payment(@auth_key)
+  end
+
   private
 
   def create_payload(username, apikey)
