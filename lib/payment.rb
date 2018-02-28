@@ -15,7 +15,7 @@ class Payment
     return error.response.to_s unless error.nil?
   end
 
-  def verify(auth_key)
+  def verify_payment(auth_key)
     headers = create_headers(auth_key)
     response = RestClient.get PAYMENTS_ENDPOINT, headers
     status = JSON.parse(response)['payments'][0]['status']
