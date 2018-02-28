@@ -10,7 +10,7 @@ class Payment
 
   def send_to(name, amount, auth_key)
     headers, payload = create_params(name, amount, auth_key)
-    return NONEXISTENT_RECIPIENT_ERROR if payload[:payment][:recipient_id] == nil
+    return NONEXISTENT_RECIPIENT_ERROR if payload[:payment][:recipient_id].nil?
     response, error = send_request(payload, headers)
     return error.response.to_s unless error.nil?
   end
@@ -32,7 +32,9 @@ class Payment
   end
 
   def get_id_by_name(name, headers)
+    name.gsub!(' ', '%20')
     response = RestClient.get RECIPIENTS_ENDPOINT + "?name=#{name}", headers
+    return nil if JSON.parse(response)['recipients'].length.zero?
     JSON.parse(response)['recipients'][0]['id']
   end
 
