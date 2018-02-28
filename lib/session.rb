@@ -25,7 +25,7 @@ class Session
     payment.send_to(name, amount, @auth_key)
   end
 
-  def verify_payment
+  def verify_last_payment
     payment = Payment.new
     payment.verify_payment(@auth_key)
   end
