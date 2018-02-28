@@ -68,21 +68,21 @@ end
 
 def stub_payment_with_valid_auth_key
   stub_request(:post, 'https://coolpay.herokuapp.com/api/payments')
-  .with(
-    body: {
-      payment: {
-        amount: "1000000",
-        currency: "GBP",
-        recipient_id: '12345'
+    .with(
+      body: {
+        payment: {
+          amount: '1000000',
+          currency: 'GBP',
+          recipient_id: '12345'
+        }
+      },
+      headers: {
+        authorization: 'Bearer 1n5t4gr4m',
+        content_type: 'application/x-www-form-urlencoded'
       }
-    },
-    headers: {
-      authorization:'Bearer 1n5t4gr4m',
-      content_type: 'application/x-www-form-urlencoded'
-    }
-  ).to_return(
-    status: 200,
-  )
+    ).to_return(
+      status: 200
+    )
 end
 
 def stub_payment_with_invalid_auth_key
@@ -90,13 +90,13 @@ def stub_payment_with_invalid_auth_key
     .with(
       body: {
         payment: {
-          amount: "1000000",
-          currency: "GBP",
+          amount: '1000000',
+          currency: 'GBP',
           recipient_id: '12345'
         }
       },
       headers: {
-        authorization:'Bearer 5n34ky-br1b3',
+        authorization: 'Bearer 5n34ky-br1b3',
         content_type: 'application/x-www-form-urlencoded'
       }
     ).to_return(
@@ -106,34 +106,34 @@ def stub_payment_with_invalid_auth_key
 end
 
 def stub_successful_payment
-  stub_request(:get, "https://coolpay.herokuapp.com/api/payments")
-  .with(
-    headers: {
-      authorization: 'Bearer g14nt-l4z3r',
-      content_type: 'application/json',
-    }
-  ).to_return(
-    status: 200,
-    body: {
-      payments: [
-        {
-          id: 'mr-pr351d3nt',
-          amount: 10.50,
-          currency: 'GBP',
-          recipient_id: 'dr-3v1l',
-          status: 'paid'
-        }
-      ]
-    }.to_json
-  )
+  stub_request(:get, 'https://coolpay.herokuapp.com/api/payments')
+    .with(
+      headers: {
+        authorization: 'Bearer g14nt-l4z3r',
+        content_type: 'application/json'
+      }
+    ).to_return(
+      status: 200,
+      body: {
+        payments: [
+          {
+            id: 'mr-pr351d3nt',
+            amount: 10.50,
+            currency: 'GBP',
+            recipient_id: 'dr-3v1l',
+            status: 'paid'
+          }
+        ]
+      }.to_json
+    )
 end
 
 def stub_unsuccessful_payment
-  stub_request(:get, "https://coolpay.herokuapp.com/api/payments")
+  stub_request(:get, 'https://coolpay.herokuapp.com/api/payments')
   .with(
     headers: {
       authorization: 'Bearer g14nt-l4z3r',
-      content_type: 'application/json',
+      content_type: 'application/json'
     }
   ).to_return(
     status: 200,
