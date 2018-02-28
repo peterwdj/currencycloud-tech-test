@@ -1,5 +1,6 @@
 require 'session'
 require 'recipient'
+require 'payment'
 
 describe Session do
   let(:session) { described_class.new }
@@ -39,6 +40,33 @@ describe Session do
       allow(Recipient).to receive(:new).and_return(recipient)
       session.add_recipient('Jack')
       expect(recipient).to have_received(:add)
+    end
+  end
+
+  describe '#make_payment' do
+    it 'calls the payment class\'s #send_to method' do
+      stub_valid_login
+      stub_request(:post, 'https://coolpay.herokuapp.com/api/payments')
+      .with(
+        body: {
+          payment: {
+            amount: "1000000",
+            currency: "GBP",
+            recipient_id: '12345'
+          }
+        },
+        headers: {
+          authorization:'Bearer 1n5t4gr4m',
+          content_type: 'application/x-www-form-urlencoded'
+        }
+      ).to_return(
+        status: 200,
+      )
+      payment = double('payment')
+      allow(payment).to receive(:send_to)
+      allow(Payment).to receive(:new).and_return(payment)
+      session.make_payment('Kevin', 1_000_000_000_000)
+      expect(payment).to have_received(:send_to)
     end
   end
 end
