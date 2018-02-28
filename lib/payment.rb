@@ -7,6 +7,7 @@ class Payment
   NONEXISTENT_RECIPIENT_ERROR = 'Error: your selected recipient does not exist. Please add them as a recipient before attempting to send a payment to them.'
   SUCCESSFUL_PAYMENT = 'Your last payment was successful.'
   UNSUCCESSFUL_PAYMENT = 'Your last payment was not successful. Please try again.'
+  PENDING_PAYMENT = 'Your last payment is still processing. Please check again in a few seconds.'
 
   def send_to(name, amount, auth_key)
     headers, payload = create_params(name, amount, auth_key)
@@ -19,7 +20,9 @@ class Payment
     headers = create_headers(auth_key)
     response = RestClient.get PAYMENTS_ENDPOINT, headers
     status = JSON.parse(response)['payments'][-1]['status']
-    status == 'paid' ? SUCCESSFUL_PAYMENT : UNSUCCESSFUL_PAYMENT
+    return SUCCESSFUL_PAYMENT if status == 'paid'
+    return UNSUCCESSFUL_PAYMENT if status == 'failed'
+    return PENDING_PAYMENT if status = 'processing'
   end
 
   private
