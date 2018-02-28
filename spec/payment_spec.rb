@@ -34,15 +34,15 @@ describe Payment do
     end
   end
 
-  describe '#verify' do
+  describe '#verify_payment' do
     it 'informs the user that the payment has been successful' do
       stub_successful_payment
-      expect(payment.verify('g14nt-l4z3r')).to eq 'Your last payment was successful.'
+      expect(payment.verify_payment('g14nt-l4z3r')).to eq 'Your last payment was successful.'
     end
 
     it 'informs the user that the payment has been unsuccessful' do
       stub_unsuccessful_payment
-      expect(payment.verify('g14nt-l4z3r')).to eq 'Your last payment was not successful. Please try again.'
+      expect(payment.verify_payment('g14nt-l4z3r')).to eq 'Your last payment was not successful. Please try again.'
     end
   end
 end
