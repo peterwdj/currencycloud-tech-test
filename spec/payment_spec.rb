@@ -24,7 +24,7 @@ describe Payment do
 
     it 'returns error response text when an invalid auth key is provided' do
       allow(payment).to receive(:get_id_by_name).and_return('12345')
-      stub_payment_with_invalid_auth_key
+      stub_payment_with_invalid_auth_token
       expect(payment.send_to('Government Officials', 1_000_000, '5n34ky-br1b3')).to eq '401 Unauthorized'
     end
 

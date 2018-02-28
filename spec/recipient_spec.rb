@@ -17,7 +17,7 @@ describe Recipient do
     end
 
     it 'returns error response text when an invalid auth key is provided' do
-      stub_recipient_with_invalid_auth_key
+      stub_recipient_with_invalid_auth_token
       expect(recipient.add('Marvin', '42')).to eq '401 Unauthorized'
     end
   end

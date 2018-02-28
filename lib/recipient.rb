@@ -4,9 +4,9 @@ require 'rest-client'
 class Recipient
   RECIPIENTS_ENDPOINT = 'https://coolpay.herokuapp.com/api/recipients'
 
-  def add(name, auth_key)
+  def add(name, auth_token)
     payload = create_payload(name)
-    headers = create_headers(auth_key)
+    headers = create_headers(auth_token)
     response, error = send_request(payload, headers)
     return error.response.to_s unless error.nil?
   end
@@ -21,10 +21,10 @@ class Recipient
     }
   end
 
-  def create_headers(auth_key)
+  def create_headers(auth_token)
     {
       content_type: 'application/json',
-      authorization: "Bearer #{auth_key}"
+      authorization: "Bearer #{auth_token}"
     }
   end
 

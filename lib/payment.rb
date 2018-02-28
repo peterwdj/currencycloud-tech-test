@@ -9,23 +9,23 @@ class Payment
   UNSUCCESSFUL_PAYMENT = 'Your last payment was not successful. Please try again.'
   PENDING_PAYMENT = 'Your last payment is still processing. Please check again in a few seconds.'
 
-  def send_to(name, amount, auth_key)
-    headers, payload = create_params(name, amount, auth_key)
+  def send_to(name, amount, auth_token)
+    headers, payload = create_params(name, amount, auth_token)
     return NONEXISTENT_RECIPIENT_ERROR if payload[:payment][:recipient_id].nil?
     response, error = send_request(payload, headers)
     return error.response.to_s unless error.nil?
   end
 
-  def verify_payment(auth_key)
-    headers = create_headers(auth_key)
+  def verify_payment(auth_token)
+    headers = create_headers(auth_token)
     response = RestClient.get PAYMENTS_ENDPOINT, headers
     return_status_message(response)
   end
 
   private
 
-  def create_params(name, amount, auth_key)
-    headers = create_headers(auth_key)
+  def create_params(name, amount, auth_token)
+    headers = create_headers(auth_token)
     id = get_id_by_name(name, headers)
     payload = create_payload(amount, id)
     return headers, payload
@@ -38,10 +38,10 @@ class Payment
     JSON.parse(response)['recipients'][0]['id']
   end
 
-  def create_headers(auth_key)
+  def create_headers(auth_token)
     {
       content_type: 'application/json',
-      authorization: "Bearer #{auth_key}"
+      authorization: "Bearer #{auth_token}"
     }
   end
 

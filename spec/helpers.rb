@@ -30,7 +30,7 @@ def stub_invalid_login
     )
 end
 
-def stub_recipient_with_valid_auth_key
+def stub_recipient_with_valid_auth_token
   stub_request(:post, 'https://coolpay.herokuapp.com/api/recipients')
     .with(
       body: {
@@ -48,7 +48,7 @@ def stub_recipient_with_valid_auth_key
     )
 end
 
-def stub_recipient_with_invalid_auth_key
+def stub_recipient_with_invalid_auth_token
   stub_request(:post, 'https://coolpay.herokuapp.com/api/recipients')
     .with(
       body: {
@@ -66,7 +66,7 @@ def stub_recipient_with_invalid_auth_key
     )
 end
 
-def stub_payment_with_valid_auth_key
+def stub_payment_with_valid_auth_token
   stub_request(:post, 'https://coolpay.herokuapp.com/api/payments')
     .with(
       body: {
@@ -85,7 +85,7 @@ def stub_payment_with_valid_auth_key
     )
 end
 
-def stub_payment_with_invalid_auth_key
+def stub_payment_with_invalid_auth_token
   stub_request(:post, 'https://coolpay.herokuapp.com/api/payments')
     .with(
       body: {

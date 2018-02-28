@@ -9,7 +9,7 @@ describe Session do
     it 'returns an authentication key' do
       stub_valid_login
       session.login
-      expect(session.auth_key).to eq '12345.yourtoken.67890'
+      expect(session.auth_token).to eq '12345.yourtoken.67890'
     end
 
     it 'returns error response text when invalid credentials are supplied' do
@@ -34,7 +34,7 @@ describe Session do
   describe '#add_recipient' do
     it 'calls the recipient class\'s #add method' do
       stub_valid_login
-      stub_recipient_with_valid_auth_key
+      stub_recipient_with_valid_auth_token
       recipient = double('recipient')
       allow(recipient).to receive(:add)
       allow(Recipient).to receive(:new).and_return(recipient)
@@ -46,7 +46,7 @@ describe Session do
   describe '#make_payment' do
     it 'calls the payment class\'s #send_to method' do
       stub_valid_login
-      stub_payment_with_valid_auth_key
+      stub_payment_with_valid_auth_token
       payment = double('payment')
       allow(payment).to receive(:send_to)
       allow(Payment).to receive(:new).and_return(payment)

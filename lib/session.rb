@@ -5,7 +5,7 @@ require_relative './recipient'
 require 'rest-client'
 
 class Session
-  attr_reader :auth_key
+  attr_reader :auth_token
   LOGIN_ENDPOINT = 'https://coolpay.herokuapp.com/api/login'
   HEADER = { content_type: 'application/json' }
 
@@ -17,17 +17,17 @@ class Session
 
   def add_recipient(name)
     recipient = Recipient.new
-    recipient.add(name, @auth_key)
+    recipient.add(name, @auth_token)
   end
 
   def make_payment(name, amount)
     payment = Payment.new
-    payment.send_to(name, amount, @auth_key)
+    payment.send_to(name, amount, @auth_token)
   end
 
   def verify_last_payment
     payment = Payment.new
-    payment.verify_payment(@auth_key)
+    payment.verify_payment(@auth_token)
   end
 
   private
@@ -46,7 +46,7 @@ class Session
 
   def send_response(response, error)
     if !response.nil? && response.code == 200
-      @auth_key = JSON.parse(response)['token']
+      @auth_token = JSON.parse(response)['token']
     else
       error.response.to_s
     end
